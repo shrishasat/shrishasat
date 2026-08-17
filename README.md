@@ -20,11 +20,6 @@ I work at the intersection of **neuroscience × AI × computational modelling**.
 🔬 Research     →   language · perception · cognition · neuroAI
 ```
 
-Currently fascinated by:
-
-**how representations emerge, how brains encode information, and how we can build AI systems that remain safe as they become more capable.**
-
----
 
 ### 🔬 research playground
 
@@ -49,16 +44,6 @@ tools = [
 ]
 ```
 
-Some things I've been playing with:
-
-🧩 **Neural encoding of language**
-Using MEG + temporal response functions to understand how linguistic properties are represented in the brain.
-
-🌐 **Brain ↔ AI representations**
-Interested in whether computational representations learned by AI systems can tell us something meaningful about biological cognition.
-
-
----
 
 ### 🛠️ my little toolbox
 
