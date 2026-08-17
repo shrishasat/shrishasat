@@ -4,10 +4,19 @@ import random
 
 
 # ============================================================
-# SHRISHA — PINK NEON PARTICLE HEART
+# SHRISHA — TINY NEON PINK PARTICLE HEART
 #
-# HEART → HEARTBEAT → BURST → SHRISHA
-#       → BURST → HEART → repeat
+# HEARTBEAT
+#     ↓
+# HEART BURSTS
+#     ↓
+# PARTICLES FORM "SHRISHA"
+#     ↓
+# SHRISHA BURSTS
+#     ↓
+# PARTICLES REFORM HEART
+#     ↓
+# REPEAT
 #
 # Transparent background
 # Pink particles ONLY
@@ -25,7 +34,8 @@ FPS = 15
 DURATION = 6.0
 FRAMES = int(FPS * DURATION)
 
-N_PARTICLES = 650
+# More particles = denser / finer effect
+N_PARTICLES = 950
 
 TEXT = "SHRISHA"
 
@@ -38,28 +48,25 @@ FONT_PATHS = [
 
 
 # ============================================================
-# PINK PALETTE
+# NEON PINK PALETTE
 #
-# SAME PINK HUE
-# Different brightness only
+# Same pink hue throughout.
+# Only brightness changes.
 # ============================================================
 
 PINK_DARK = (180, 5, 95)
 
-PINK = (255, 20, 150)
+PINK = (255, 15, 145)
 
-PINK_HOT = (255, 45, 175)
+PINK_HOT = (255, 35, 165)
 
-PINK_BRIGHT = (255, 100, 200)
+PINK_BRIGHT = (255, 80, 195)
 
-PINK_CORE = (255, 180, 225)
+PINK_CORE = (255, 150, 220)
 
 
 # ============================================================
-# GIF TRANSPARENCY KEY
-#
-# This colour is never drawn.
-# It is reserved for transparent pixels.
+# TRANSPARENCY KEY
 # ============================================================
 
 TRANSPARENT = (0, 255, 0)
@@ -119,9 +126,7 @@ def smoothstep(t):
         min(1.0, t)
     )
 
-    return (
-        t * t * (3.0 - 2.0 * t)
-    )
+    return t * t * (3.0 - 2.0 * t)
 
 
 def ease_out(t):
@@ -131,9 +136,7 @@ def ease_out(t):
         min(1.0, t)
     )
 
-    return 1.0 - (
-        1.0 - t
-    ) ** 3
+    return 1.0 - (1.0 - t) ** 3
 
 
 def ease_in_out(t):
@@ -142,7 +145,7 @@ def ease_in_out(t):
 
 
 # ============================================================
-# HEART PARTICLES
+# CREATE HEART PARTICLES
 # ============================================================
 
 def create_heart_points(n):
@@ -156,7 +159,7 @@ def create_heart_points(n):
             2 * math.pi
         )
 
-        # Controls how full the heart is
+        # Random density inside the heart
         scale = random.uniform(
             0.35,
             1.0
@@ -178,7 +181,6 @@ def create_heart_points(n):
         x *= scale
         y *= scale
 
-        # Position on canvas
         px = (
             W / 2
             + x * 8.0
@@ -197,7 +199,7 @@ def create_heart_points(n):
 
 
 # ============================================================
-# TEXT PARTICLES
+# CREATE TEXT PARTICLES
 # ============================================================
 
 def create_text_points(
@@ -244,7 +246,8 @@ def create_text_points(
 
     pixels = []
 
-    # Sample the letters
+    # Fine sampling gives the letters
+    # a dense particle structure.
     for yy in range(
         0,
         H,
@@ -278,7 +281,7 @@ def create_text_points(
 
 
 # ============================================================
-# CREATE HEART + TEXT TARGETS
+# TARGET POSITIONS
 # ============================================================
 
 heart_points = create_heart_points(
@@ -303,38 +306,45 @@ for i in range(
 
     particles.append({
 
-        # Particle size
-        "size": random.choice([
-            1,
-            1,
-            1,
-            2,
-            2,
-            3
-        ]),
+        # MOST PARTICLES ARE TINY
+        "size": random.choices(
+            [1, 2, 3],
+            weights=[
+                82,
+                16,
+                2
+            ],
+            k=1
+        )[0],
 
-        # Brightness
+        # Individual sparkle brightness
         "brightness": random.uniform(
-            0.70,
+            0.75,
             1.0
         ),
 
-        # How far it flies during burst
+        # Burst distance
         "burst": random.uniform(
             0.75,
             1.35
         ),
 
-        # Random explosion direction
+        # Random burst direction
         "angle": random.uniform(
             0,
             2 * math.pi
         ),
 
-        # Tiny individual timing variation
+        # Individual sparkle timing
         "phase": random.uniform(
             0,
             2 * math.pi
+        ),
+
+        # Sparkle speed
+        "sparkle_speed": random.uniform(
+            9,
+            16
         )
     })
 
@@ -345,7 +355,7 @@ for i in range(
 
 def heartbeat(t):
 
-    # Strong first beat
+    # First strong beat
     beat1 = math.exp(
         -(
             (t - 0.28)
@@ -353,7 +363,7 @@ def heartbeat(t):
         ) ** 2
     )
 
-    # Smaller second beat
+    # Second smaller beat
     beat2 = math.exp(
         -(
             (t - 0.45)
@@ -392,10 +402,7 @@ def particle_position(
 
 
     # ========================================================
-    # PHASE 1
-    #
     # 0.00 → 1.00
-    #
     # HEARTBEAT
     # ========================================================
 
@@ -421,11 +428,8 @@ def particle_position(
 
 
     # ========================================================
-    # PHASE 2
-    #
     # 1.00 → 1.45
-    #
-    # HEART BURSTS
+    # HEART EXPLOSION
     # ========================================================
 
     if time < 1.45:
@@ -464,7 +468,7 @@ def particle_position(
             + dy * explosion
         )
 
-        # Slight sideways randomness
+        # Organic sideways movement
         x += (
             math.cos(p["angle"])
             * 25
@@ -481,11 +485,8 @@ def particle_position(
 
 
     # ========================================================
-    # PHASE 3
-    #
     # 1.45 → 2.65
-    #
-    # PARTICLES FORM SHRISHA
+    # PARTICLES → SHRISHA
     # ========================================================
 
     if time < 2.65:
@@ -538,21 +539,19 @@ def particle_position(
 
 
     # ========================================================
-    # PHASE 4
-    #
     # 2.65 → 3.45
-    #
-    # SHRISHA HOLDS
+    # SHRISHA
     # ========================================================
 
     if time < 3.45:
 
+        # Very subtle particle breathing
         movement = (
             math.sin(
                 time * 8
                 + p["phase"]
             )
-            * 0.7
+            * 0.5
         )
 
         return (
@@ -562,11 +561,8 @@ def particle_position(
 
 
     # ========================================================
-    # PHASE 5
-    #
     # 3.45 → 4.15
-    #
-    # SHRISHA EXPLODES
+    # SHRISHA EXPLOSION
     # ========================================================
 
     if time < 4.15:
@@ -621,11 +617,8 @@ def particle_position(
 
 
     # ========================================================
-    # PHASE 6
-    #
     # 4.15 → 5.15
-    #
-    # PARTICLES RETURN TO HEART
+    # PARTICLES → HEART
     # ========================================================
 
     if time < 5.15:
@@ -678,10 +671,7 @@ def particle_position(
 
 
     # ========================================================
-    # PHASE 7
-    #
     # 5.15 → 6.00
-    #
     # HEARTBEAT
     # ========================================================
 
@@ -707,21 +697,33 @@ def particle_position(
 
 
 # ============================================================
-# DRAW ONE PINK NEON PARTICLE
+# DRAW TINY NEON PINK PARTICLE
 # ============================================================
 
 def draw_particle_neon(
     draw,
     x,
     y,
-    size
+    size,
+    sparkle
 ):
 
-    # --------------------------------------------------------
-    # OUTER PINK GLOW
-    # --------------------------------------------------------
+    # ========================================================
+    # VERY SMALL OUTER GLOW
+    # ========================================================
 
-    r1 = size * 5
+    if size == 1:
+
+        r1 = 2.5
+
+    elif size == 2:
+
+        r1 = 4
+
+    else:
+
+        r1 = 5
+
 
     draw.ellipse(
         (
@@ -734,11 +736,22 @@ def draw_particle_neon(
     )
 
 
-    # --------------------------------------------------------
-    # MEDIUM PINK GLOW
-    # --------------------------------------------------------
+    # ========================================================
+    # NEON PINK MIDDLE
+    # ========================================================
 
-    r2 = size * 3.2
+    if size == 1:
+
+        r2 = 1.6
+
+    elif size == 2:
+
+        r2 = 2.3
+
+    else:
+
+        r2 = 3
+
 
     draw.ellipse(
         (
@@ -751,11 +764,14 @@ def draw_particle_neon(
     )
 
 
-    # --------------------------------------------------------
-    # HOT PINK
-    # --------------------------------------------------------
+    # ========================================================
+    # HOT PINK CORE
+    # ========================================================
 
-    r3 = size * 2
+    r3 = max(
+        1,
+        size
+    )
 
     draw.ellipse(
         (
@@ -768,43 +784,20 @@ def draw_particle_neon(
     )
 
 
-    # --------------------------------------------------------
-    # BRIGHT PINK CORE
-    # --------------------------------------------------------
+    # ========================================================
+    # RANDOM-LOOKING BUT DETERMINISTIC SPARKLE
+    # ========================================================
 
-    r4 = max(
-        1,
-        size
-    )
+    if sparkle > 0.92:
 
-    draw.ellipse(
-        (
-            x - r4,
-            y - r4,
-            x + r4,
-            y + r4
-        ),
-        fill=PINK_BRIGHT
-    )
-
-
-    # --------------------------------------------------------
-    # TINY LIGHT-PINK CORE
-    # --------------------------------------------------------
-
-    if size >= 2:
-
-        r5 = max(
-            1,
-            size * 0.45
-        )
+        r4 = 1
 
         draw.ellipse(
             (
-                x - r5,
-                y - r5,
-                x + r5,
-                y + r5
+                x - r4,
+                y - r4,
+                x + r4,
+                y + r4
             ),
             fill=PINK_CORE
         )
@@ -816,10 +809,7 @@ def draw_particle_neon(
 
 def draw_frame(time):
 
-    # --------------------------------------------------------
-    # COMPLETELY TRANSPARENT BACKGROUND
-    # --------------------------------------------------------
-
+    # Completely transparent canvas
     image = Image.new(
         "RGBA",
         (W, H),
@@ -831,9 +821,9 @@ def draw_frame(time):
     )
 
 
-    # --------------------------------------------------------
-    # DRAW EVERY PARTICLE
-    # --------------------------------------------------------
+    # ========================================================
+    # PARTICLES
+    # ========================================================
 
     for i in range(
         N_PARTICLES
@@ -844,13 +834,25 @@ def draw_frame(time):
             time
         )
 
-        size = particles[i]["size"]
+        p = particles[i]
+
+        # Smooth individual sparkle
+        sparkle = (
+            0.5
+            + 0.5
+            * math.sin(
+                time
+                * p["sparkle_speed"]
+                + p["phase"]
+            )
+        )
 
         draw_particle_neon(
             draw,
             x,
             y,
-            size
+            p["size"],
+            sparkle
         )
 
 
@@ -858,22 +860,21 @@ def draw_frame(time):
 
 
 # ============================================================
-# CONVERT RGBA → TRANSPARENT GIF
+# CONVERT RGBA → TRANSPARENT GIF FRAME
 # ============================================================
 
 def rgba_to_gif_frame(
     image
 ):
 
-    # Create RGB image using the reserved
-    # transparency colour.
+    # RGB canvas with transparency key
     rgb = Image.new(
         "RGB",
         (W, H),
         TRANSPARENT
     )
 
-    # Paste the neon particles over it.
+    # Paste visible pixels
     rgb.paste(
         image,
         mask=image.getchannel(
@@ -882,9 +883,9 @@ def rgba_to_gif_frame(
     )
 
 
-    # --------------------------------------------------------
-    # Quantize to GIF
-    # --------------------------------------------------------
+    # ========================================================
+    # QUANTIZE
+    # ========================================================
 
     palette = rgb.quantize(
         colors=255,
@@ -892,10 +893,10 @@ def rgba_to_gif_frame(
     )
 
 
-    # --------------------------------------------------------
-    # Reserve palette index 0
-    # for transparency.
-    # --------------------------------------------------------
+    # ========================================================
+    # RESERVE PALETTE INDEX 0
+    # FOR TRANSPARENCY
+    # ========================================================
 
     old_palette = (
         palette.getpalette()
@@ -925,9 +926,9 @@ def rgba_to_gif_frame(
     )
 
 
-    # --------------------------------------------------------
-    # Replace transparency-key pixels
-    # --------------------------------------------------------
+    # ========================================================
+    # MARK TRANSPARENT PIXELS
+    # ========================================================
 
     palette_pixels = (
         palette.load()
@@ -971,7 +972,7 @@ def rgba_to_gif_frame(
 
 
 # ============================================================
-# GENERATE ANIMATION
+# GENERATE
 # ============================================================
 
 print()
@@ -980,7 +981,7 @@ print(
 )
 
 print(
-    "   SHRISHA PINK NEON PARTICLE HEART"
+    "   SHRISHA — TINY PINK NEON PARTICLES"
 )
 
 print(
@@ -1002,7 +1003,7 @@ for frame_number in range(
     )
 
     print(
-        f"Generating "
+        f"Generating frame "
         f"{frame_number + 1}"
         f"/{FRAMES}",
         end="\r"
@@ -1027,7 +1028,9 @@ for frame_number in range(
 # SAVE
 # ============================================================
 
+# SAME FILE NAME AS BEFORE
 output = "shrisha-neon.gif"
+
 
 frames[0].save(
     output,
@@ -1051,7 +1054,7 @@ print(
 )
 
 print(
-    "DONE!"
+    "DONE ✨"
 )
 
 print(
@@ -1063,7 +1066,7 @@ print(
 )
 
 print(
-    "Particles: PINK ONLY"
+    "Particles: TINY + NEON PINK"
 )
 
 print(

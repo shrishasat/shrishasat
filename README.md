@@ -4,7 +4,7 @@
 
 **Biomed Engineer · neuroAI researcher · occasional internet wanderer**
 
-> *trying to understand intelligence — from brains, machines, and everything in between.*
+> *trying to understand intelligence — from brains, machines, and everything in between.*git status
 
 ---
 
