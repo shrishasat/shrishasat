@@ -727,7 +727,7 @@ for frame_number in range(FRAMES):
 # SAVE GIF
 # ============================================================
 
-output = "shrisha-neon.gif"
+output = "shrisha-neon_transparent_bg.gif"
 
 frames[0].save(
     output,
