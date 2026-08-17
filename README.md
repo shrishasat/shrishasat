@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/shrisha-neon.gif" width="550"> 
+  <img src="assets/shrisha-neon.gif" width="650"> 
 </p>
 
 **Biomed Engineer · neuroAI researcher · occasional internet wanderer**
