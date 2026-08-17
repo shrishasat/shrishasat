@@ -1,4 +1,6 @@
-# ˚₊‧꒰ა 🧠 ໒꒱ ‧₊˚It's Shrisha!
+<p align="center">
+  <img src="assets/shrisha-neon.gif" width="600">
+</p>
 
 **Biomed Engineer · neuroAI researcher · occasional internet wanderer**
 
@@ -55,11 +57,6 @@ Using MEG + temporal response functions to understand how linguistic properties 
 🌐 **Brain ↔ AI representations**
 Interested in whether computational representations learned by AI systems can tell us something meaningful about biological cognition.
 
-🧠 **Causal neural modelling**
-Exploring computational approaches to modelling brain systems and eventually building useful *digital twins* of neural processes.
-
-🛡️ **AI safety**
-Thinking about how we can understand, evaluate and reduce risks from increasingly capable AI systems.
 
 ---
 
@@ -99,10 +96,6 @@ Thinking about how we can understand, evaluate and reduce risks from increasingl
 ---
 
 ### 🌐 find me around the internet
-
-[![Personal Website](https://img.shields.io/badge/Personal%20Website-ffffff?style=flat-square\&logo=googlechrome\&logoColor=111111)](https://shrishasat.github.io/Shrisha_Personal_Website/)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-ffffff?style=flat-square\&logo=linkedin\&logoColor=0A66C2)](https://www.linkedin.com/in/shrishasathishkumar/)
-[![Google Scholar](https://img.shields.io/badge/Google%20Scholar-ffffff?style=flat-square\&logo=googlescholar\&logoColor=4285F4)](https://scholar.google.co.uk/citations?user=KxEHmOIAAAAJ&hl=en)
 
 <p align="center">
 
