@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="assets/shrisha-neon.gif" width="550">
+</p>
 
 **Biomed Engineer · neuroAI researcher · occasional internet wanderer**
 
