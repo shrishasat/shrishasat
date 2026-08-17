@@ -35,8 +35,8 @@ PURPLE = (185, 60, 255)
 WHITE_PINK = (255, 210, 245)
 
 # Background
-BACKGROUND = (4, 4, 10)
-
+# BACKGROUND = (4, 4, 10) # pure black
+BACKGROUND = (13, 17, 23) # github dark mode
 # Text
 TEXT = "SHRISHA"
 
